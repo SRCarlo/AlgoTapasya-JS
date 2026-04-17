@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Advanced DSA Tracker</title>
+<style>
+body { font-family: Arial; background:#0f172a; color:white; text-align:center; }
+h1 { margin-top:20px; }
+
+.topbar {
+  display:flex;
+  justify-content:space-around;
+  margin:20px;
+}
+
+.card {
+  background:#1e293b;
+  padding:15px;
+  border-radius:10px;
+  width:200px;
+}
+
+.container {
+  display:grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap:10px;
+  padding:20px;
+}
+
+.day {
+  padding:15px;
+  border-radius:10px;
+  cursor:pointer;
+  background:#1e293b;
+}
+
+.completed { background:#22c55e; }
+.inprogress { background:#f59e0b; }
+
+.progress-bar {
+  width:80%;
+  margin:20px auto;
+  background:#1e293b;
+  border-radius:10px;
+}
+
+.progress-fill {
+  height:20px;
+  background:#22c55e;
+  border-radius:10px;
+  width:0%;
+}
+</style>
+</head>
+<body>
+
+<h1>🚀 Advanced DSA 60 Days Tracker</h1>
+
+<div class="topbar">
+  <div class="card">✅ Completed: <span id="doneCount">0</span></div>
+  <div class="card">🟡 In Progress: <span id="progressCount">0</span></div>
+  <div class="card">🔥 Streak: <span id="streak">0</span></div>
+</div>
+
+<div class="progress-bar">
+  <div class="progress-fill" id="progressFill"></div>
+</div>
+
+<div class="container" id="tracker"></div>
+
+<script>
+const container = document.getElementById("tracker");
+let progress = JSON.parse(localStorage.getItem("dsaProgress")) || {};
+
+let done = 0;
+let inprogress = 0;
+
+for (let i = 1; i <= 60; i++) {
+    let div = document.createElement("div");
+    div.classList.add("day");
+    div.innerText = "Day " + i;
+
+    if (progress[i] === "done") {
+        div.classList.add("completed");
+        done++;
+    }
+    if (progress[i] === "progress") {
+        div.classList.add("inprogress");
+        inprogress++;
+    }
+
+    div.onclick = () => {
+        if (!progress[i]) {
+            progress[i] = "progress";
+        } else if (progress[i] === "progress") {
+            progress[i] = "done";
+        } else {
+            delete progress[i];
+        }
+        localStorage.setItem("dsaProgress", JSON.stringify(progress));
+        location.reload();
+    };
+
+    container.appendChild(div);
+}
+
+// Update stats
+document.getElementById("doneCount").innerText = done;
+document.getElementById("progressCount").innerText = inprogress;
+
+// Progress %
+let percent = (done / 60) * 100;
+document.getElementById("progressFill").style.width = percent + "%";
+
+// Streak calculation
+let streak = 0;
+for (let i = 1; i <= 60; i++) {
+    if (progress[i] === "done") streak++;
+    else break;
+}
+document.getElementById("streak").innerText = streak;
+</script>
+
+</body>
+</html>
