@@ -17,7 +17,7 @@
 
 Track your progress using the interactive **60 Days of JavaScript DSA** tracker. You can manually update your progress for each day.
 
-[Open the Tracker](./tracker.html)
+[Open the Tracker](https://effervescent-rabanadas-d88f43.netlify.app/)
 
 ---
 
