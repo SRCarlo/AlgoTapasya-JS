@@ -2,56 +2,113 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Advanced DSA Tracker</title>
-<style>
-body { font-family: Arial; background:#0f172a; color:white; text-align:center; }
-h1 { margin-top:20px; }
 
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #0f172a;
+  color: white;
+  text-align: center;
+  padding: 10px;
+}
+
+h1 {
+  margin: 20px 10px;
+  font-size: clamp(18px, 3vw, 28px);
+}
+
+/* TOP BAR */
 .topbar {
-  display:flex;
-  justify-content:space-around;
-  margin:20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin: 20px 0;
 }
 
 .card {
-  background:#1e293b;
-  padding:15px;
-  border-radius:10px;
-  width:200px;
+  background: #1e293b;
+  padding: 12px 16px;
+  border-radius: 10px;
+  flex: 1 1 150px;
+  max-width: 220px;
+  font-size: 14px;
 }
 
-.container {
-  display:grid;
-  grid-template-columns: repeat(10, 1fr);
-  gap:10px;
-  padding:20px;
-}
-
-.day {
-  padding:15px;
-  border-radius:10px;
-  cursor:pointer;
-  background:#1e293b;
-}
-
-.completed { background:#22c55e; }
-.inprogress { background:#f59e0b; }
-
+/* PROGRESS BAR */
 .progress-bar {
-  width:80%;
-  margin:20px auto;
-  background:#1e293b;
-  border-radius:10px;
+  width: 90%;
+  max-width: 600px;
+  margin: 20px auto;
+  background: #1e293b;
+  border-radius: 10px;
+  overflow: hidden;
 }
 
 .progress-fill {
-  height:20px;
-  background:#22c55e;
-  border-radius:10px;
-  width:0%;
+  height: 18px;
+  background: #22c55e;
+  width: 0%;
+  transition: width 0.3s ease;
+}
+
+/* GRID */
+.container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
+  gap: 10px;
+  padding: 10px;
+  max-width: 1000px;
+  margin: auto;
+}
+
+/* DAY BOX */
+.day {
+  padding: 12px 5px;
+  border-radius: 10px;
+  cursor: pointer;
+  background: #1e293b;
+  font-size: 12px;
+  user-select: none;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.day:active {
+  transform: scale(0.95);
+}
+
+.completed {
+  background: #22c55e;
+}
+
+.inprogress {
+  background: #f59e0b;
+  color: black;
+}
+
+/* MOBILE OPTIMIZATION */
+@media (max-width: 480px) {
+  .day {
+    font-size: 10px;
+    padding: 10px 2px;
+  }
+
+  .card {
+    font-size: 12px;
+    padding: 10px;
+  }
 }
 </style>
 </head>
+
 <body>
 
 <h1>🚀 Advanced DSA 60 Days Tracker</h1>
@@ -75,6 +132,7 @@ let progress = JSON.parse(localStorage.getItem("dsaProgress")) || {};
 let done = 0;
 let inprogress = 0;
 
+// Create days
 for (let i = 1; i <= 60; i++) {
     let div = document.createElement("div");
     div.classList.add("day");
@@ -97,6 +155,7 @@ for (let i = 1; i <= 60; i++) {
         } else {
             delete progress[i];
         }
+
         localStorage.setItem("dsaProgress", JSON.stringify(progress));
         location.reload();
     };
@@ -104,15 +163,15 @@ for (let i = 1; i <= 60; i++) {
     container.appendChild(div);
 }
 
-// Update stats
+// Stats
 document.getElementById("doneCount").innerText = done;
 document.getElementById("progressCount").innerText = inprogress;
 
-// Progress %
+// Progress bar
 let percent = (done / 60) * 100;
 document.getElementById("progressFill").style.width = percent + "%";
 
-// Streak calculation
+// Streak
 let streak = 0;
 for (let i = 1; i <= 60; i++) {
     if (progress[i] === "done") streak++;
