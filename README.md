@@ -109,7 +109,7 @@ node Week-01-Arrays-Basics/Day-01/01-two-sum.js
 ## 🌱 Current Status / 📊 Progress
 
 - **Status:** 🟢 **Active** 
-- **Progress:**  **Week 02 / 09** **( Day 08 / 60 )**
+- **Progress:**  **Week 02 / 09** **( Day 09 / 60 )**
 
 ---
 
